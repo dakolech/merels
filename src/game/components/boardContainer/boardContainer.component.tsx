@@ -4,7 +4,6 @@ import { bindActionCreators } from 'redux';
 
 import { BoardComponent } from '../board';
 import { GameComponent } from '../game';
-import { styles, padding } from '../board.styles';
 import { NextMoveComponent } from '../nextMove';
 import { PlayersComponent } from '../players';
 import { Action, resetGame } from '../../game.actions';
@@ -23,7 +22,7 @@ interface Props {
 
 function BoardContainer(props: Props) {
   const Container = styled.div`
-     height: ${(props.boxSize * props.board.length) + (2 * padding)}px;
+     height: ${(props.boxSize * props.board.length) + (2 * 20)}px;
      position: relative;
   `;
 
@@ -34,10 +33,10 @@ function BoardContainer(props: Props) {
           <BoardComponent />
           <GameComponent />
         </Container>
-        <div style={styles.nextMove}>
+        <div>
           <NextMoveComponent />
         </div>
-        <div style={styles.players}>
+        <div>
           <PlayersComponent />
         </div>
         <div>
