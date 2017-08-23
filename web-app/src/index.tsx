@@ -13,7 +13,7 @@ window.addEventListener('resize', () => {
   store.dispatch(callBoxSize({ boxSize: Math.min(
     Math.floor(((window.innerWidth - (padding * 2)) / boardToDraw.length)),
     Math.floor(((window.innerHeight - (padding * 2)) / boardToDraw.length))
-  )}))
+  )}));
 });
 
 ReactDOM.render(

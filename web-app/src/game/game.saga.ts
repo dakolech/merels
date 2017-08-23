@@ -193,6 +193,7 @@ function* handleTakeMove(
   }
 }
 
+// tslint:disable-next-line:no-any
 function* nextMove(action: any) {
   const { row, column } = action.payload as SimpleCell;
   const state: GameState = yield select();
@@ -239,7 +240,7 @@ function* nextMove(action: any) {
     selectedBox.isInMill === 0
   ) {
     yield put(removePawnFromBoard({ row, column, player: opponent }));
-    yield put(decreasePawnsFromBoard({ player: opponent }))
+    yield put(decreasePawnsFromBoard({ player: opponent }));
     if (opponentPawnsInHand === 0 && pawnsInHand === 0) {
       yield put(changeActionType({ type: SELECT_TO_MOVE }));
       yield put(setNextMoveText({ text: selectPawnMessage(opponentName) }));
@@ -307,7 +308,7 @@ function* nextMove(action: any) {
     selectedBox.isInMill === 0
   ) {
     yield put(removePawnFromBoard({ row, column, player: opponent }));
-    yield put(decreasePawnsFromBoard({ player: opponent }))
+    yield put(decreasePawnsFromBoard({ player: opponent }));
     if (opponentPawnsOnBoard === 3) {
       yield put(setWinner({ player }));
       yield put(setNextMoveText({ text: setWinnerMessage(playerName) }));
@@ -322,8 +323,9 @@ function* nextMove(action: any) {
   }
 }
 
+// tslint:disable-next-line:no-any
 function* boxSizeChanged(action: any) {
-  yield put(setBoxSize({ boxSize: action.payload.boxSize }))
+  yield put(setBoxSize({ boxSize: action.payload.boxSize }));
 }
 
 export function* gameSaga() {

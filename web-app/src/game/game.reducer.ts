@@ -72,6 +72,7 @@ export const initialStateGame: GameState = {
   winner: '',
 };
 
+// tslint:disable-next-line:no-any
 const updateCell = (col: number, row: number, fn: (...args: any[]) => any) =>
   evolve({
     board: adjust(

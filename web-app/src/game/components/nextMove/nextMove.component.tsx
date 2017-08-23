@@ -15,7 +15,6 @@ function NextMove(props: Props) {
   );
 }
 
-
 const mapStateToProps = (state: AppState) => ({
   nextMove: path<string>(['game', 'nextMove'], state),
 });

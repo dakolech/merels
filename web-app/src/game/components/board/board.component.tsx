@@ -26,7 +26,6 @@ const Container = styled.div`
 `;
 
 function Board(props: Props) {
-  console.log('Board')
   return (
     <Container>
       {props.board.map((column, columnIndex) => (

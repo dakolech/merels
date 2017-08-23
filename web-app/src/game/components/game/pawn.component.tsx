@@ -21,8 +21,7 @@ function Pawn(props: OwnProps&StateProps) {
     font-size: ${props.boxSize}px;
     color: ${props[props.box.pawn]};
   `;
-  console.log('Pawn')
-  return props.box.pawn ? <PawnIcon className="fa fa-circle"></PawnIcon> : null;
+  return props.box.pawn ? <PawnIcon className="fa fa-circle" /> : null;
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
@@ -30,4 +29,5 @@ const mapStateToProps = (state: AppState): StateProps => ({
   PLAYER2: path(['game', PLAYER2, 'color'], state),
 });
 
+// tslint:disable-next-line:no-any
 export const PawnComponent = connect<StateProps, any, any>(mapStateToProps)(Pawn);

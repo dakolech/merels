@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {connect, Dispatch} from 'react-redux';
+import { connect, Dispatch } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { BoardComponent } from '../board';
@@ -17,8 +17,6 @@ interface Props {
   boxSize: number;
   resetGame: () => Action;
 }
-
-
 
 function BoardContainer(props: Props) {
   const Container = styled.div`

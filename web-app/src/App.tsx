@@ -9,7 +9,7 @@ import { BoardContainerComponent } from './game/components/boardContainer/boardC
 class App extends React.Component<{}, {}> {
   render() {
     return (
-      <BoardContainerComponent></BoardContainerComponent>
+      <BoardContainerComponent />
     );
   }
 }

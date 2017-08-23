@@ -7,7 +7,6 @@ interface Props {
 }
 
 function Box(props: Props) {
-  console.log('Box')
   const Icon = styled.i`
     font-size: ${props.boxSize}px;
     
@@ -16,7 +15,7 @@ function Box(props: Props) {
     }
   `;
   return props.box ?
-    <Icon className={`icon-${props.box}`}> </Icon> :
+    <Icon className={`icon-${props.box}`} /> :
     <div style={{ width: props.boxSize, height: props.boxSize }} />;
 }
 

@@ -1,12 +1,12 @@
 import * as React from 'react';
-import {connect, Dispatch} from 'react-redux';
+import { connect, Dispatch } from 'react-redux';
 import { BoardCell } from '../../board.generator';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
-import {PawnComponent} from './pawn.component';
-import {bindActionCreators} from 'redux';
-import {Action, nextMove, SetPawnType} from '../../game.actions';
+import { PawnComponent } from './pawn.component';
+import { bindActionCreators } from 'redux';
+import { Action, nextMove, SetPawnType } from '../../game.actions';
 
 interface OwnProps {
   column: number;
@@ -19,6 +19,7 @@ interface StateProps {
   nextMove: (payload: SetPawnType) => Action;
 }
 
+// tslint:disable-next-line:no-any
 function PawnContainer(props: OwnProps&StateProps): any {
   const Container = styled.div`
     width: 100%;
@@ -32,8 +33,7 @@ function PawnContainer(props: OwnProps&StateProps): any {
     <Container onClick={() => props.nextMove({ column: props.column, row: props.row })}>
       <span
         style={{ width: props.boxSize, height: props.boxSize }}
-        >
-      </span>
+      />
 
     <PawnComponent key={props.box.id} boxSize={props.boxSize} box={props.box} />
     </Container>
@@ -44,9 +44,12 @@ function mapDispatchToProps(dispatch: Dispatch<AppState>) {
   return bindActionCreators({ nextMove }, dispatch);
 }
 
+// tslint:disable-next-line:no-any
 const mapStateToProps = (state: AppState, ownProps: OwnProps): any => ({
   box: path(['game', 'board', ownProps.column, ownProps.row], state),
   boxSize: path(['game', 'boxSize'], state),
 });
 
-export const PawnContainerComponent = connect<StateProps, OwnProps, any>(mapStateToProps, mapDispatchToProps)(PawnContainer);
+export const PawnContainerComponent =
+// tslint:disable-next-line:no-any
+  connect<StateProps, OwnProps, any>(mapStateToProps, mapDispatchToProps)(PawnContainer);

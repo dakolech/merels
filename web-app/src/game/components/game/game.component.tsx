@@ -4,13 +4,12 @@ import { BoardToDraw } from '../../board.generator';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
-import {PawnContainerComponent} from './pawnContainer.component';
+import { PawnContainerComponent } from './pawnContainer.component';
 
 interface Props {
   boxSize: number;
   boardToDraw: BoardToDraw;
 }
-
 
 const Cell = styled.div`
   display: block;
@@ -27,7 +26,6 @@ function Game(props: Props) {
     display: inline-grid;
     width: ${props.boxSize}px;
   `;
-  console.log('Game')
 
   return (
     <Container className="Game">
@@ -41,7 +39,7 @@ function Game(props: Props) {
               >
               <PawnContainerComponent column={columnIndex} row={boxIndex}  />
               </Cell>
-            )
+            );
           })}
         </Row>
       ))}
