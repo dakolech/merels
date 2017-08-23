@@ -24,7 +24,9 @@
     "redux-saga": "^0.15.6",
     "styled-components": "^2.1.2"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "typescript": "^2.5.1"
+  },
   "scripts": {
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
