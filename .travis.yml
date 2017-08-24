@@ -8,6 +8,8 @@ before_script:
 - npm install
 after_success:
 - cd build
+- echo $FTP_PASSWORD
+- $FTP_PASSWORD
 - find . -type f -exec curl --ftp-create-dirs -T {} -u $FTP_USER:$FTP_PASSWORD ftp://s16.mydevil.net/public_nodejs/public/\{\}
   \;
 notifications:
