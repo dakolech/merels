@@ -27,11 +27,13 @@
     "@types/react-router": "^4.0.14",
     "@types/react-router-redux": "^5.0.4",
     "@types/redux": "^3.6.0",
+    "concurrently": "^3.5.0",
     "typescript": "^2.5.1"
   },
   "scripts": {
-    "start": "react-scripts-ts start",
-    "build": "react-scripts-ts build",
+    "init": "npm link ../shared",
+    "start": "concurrently --kill-others \"cd ../shared && npm run watch\" \"react-scripts-ts start\"",
+    "build": "cd ../shared && npm run build && cd ../web-app && react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   }

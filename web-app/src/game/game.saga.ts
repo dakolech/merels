@@ -4,7 +4,6 @@ import { gameLogic } from 'merels-shared';
 import { map } from 'ramda';
 import { GameState, SimpleCell } from 'merels-shared';
 
-
 // tslint:disable-next-line:no-any
 function* nextMove(action: any) {
   const { row, column } = action.payload as SimpleCell;

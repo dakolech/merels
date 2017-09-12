@@ -6,6 +6,7 @@ script:
 before_script:
 - cd web-app
 - npm install
+- npm run init
 after_success:
 - cd build
 - echo $FTP_PASSWORD
