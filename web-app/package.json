@@ -3,7 +3,9 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
+    "@types/lodash.throttle": "^4.1.3",
     "font-awesome": "^4.7.0",
+    "lodash.throttle": "^4.1.1",
     "ramda": "^0.24.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

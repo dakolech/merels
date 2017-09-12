@@ -20,13 +20,6 @@ export const MOVE_ACTION = 'MOVE_ACTION';
 export const TAKE_AFTER_MOVE_ACTION = 'TAKE_AFTER_MOVE_ACTION';
 export const END_GAME = 'END_GAME';
 
-export const padding = 2;
-
-const boxSize = Math.min(
-  Math.floor(((window.innerWidth - (padding * 2)) / boardToDraw.length)),
-  Math.floor(((window.innerHeight - (padding * 2)) / boardToDraw.length))
-);
-
 export interface PLAYER {
   pawnsInHand: number;
   pawnsOnBoard: number;
@@ -65,7 +58,7 @@ export const initialStateGame: GameState = {
   },
   currentPlayer: PLAYER1,
   currentAction: PUT_ACTION,
-  boxSize,
+  boxSize: 0,
   nextMove: putPawnMessage('Player 1'),
   millSize,
   cacheSelectedPawn: {

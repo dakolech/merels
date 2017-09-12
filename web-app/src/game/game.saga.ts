@@ -1,9 +1,9 @@
-import { put, takeEvery, select, throttle } from 'redux-saga/effects';
+import { put, takeEvery, select } from 'redux-saga/effects';
 import {
   NEXT_MOVE, setPawn, nextPlayer, removePawnFromHand, setNextMoveText, setMillInBox,
   changeActionType, highlightAvailablePawns, removePawnFromBoard, cleanHighlightedPawns,
   cachePawnPosition, highlightAvailableBox, removeMillInBox, highlightAllAvailableBoxes,
-  setWinner, decreasePawnsFromBoard, CALL_BOX_SIZE, setBoxSize
+  setWinner, decreasePawnsFromBoard
 } from './game.actions';
 import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage,
   setWinnerMessage } from './game.messages';
@@ -323,12 +323,6 @@ function* nextMove(action: any) {
   }
 }
 
-// tslint:disable-next-line:no-any
-function* boxSizeChanged(action: any) {
-  yield put(setBoxSize({ boxSize: action.payload.boxSize }));
-}
-
 export function* gameSaga() {
   yield takeEvery(NEXT_MOVE, nextMove);
-  yield throttle(2000, CALL_BOX_SIZE, boxSizeChanged);
 }
