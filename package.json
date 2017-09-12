@@ -1,0 +1,23 @@
+{
+  "name": "merels",
+  "version": "0.1.1",
+  "description": "Merels game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dakolech/merels.git"
+  },
+  "author": "Daniel Koza <dakolech@gmail.com> (https://github.com/dakolech)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dakolech/merels/issues"
+  },
+  "homepage": "https://github.com/dakolech/merels#readme",
+  "dependencies": {
+    "@types/ramda": "^0.24.11",
+    "ramda": "^0.24.1"
+  }
+}

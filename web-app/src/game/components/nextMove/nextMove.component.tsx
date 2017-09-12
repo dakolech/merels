@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { path } from 'ramda';
 import { AppState } from '../../../configureStore';
 
-// import { styles } from '../board.styles';
-
 interface Props {
   nextMove: string;
 }

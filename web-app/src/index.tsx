@@ -5,8 +5,8 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
 import { store } from './configureStore';
-import { boardToDraw } from './game/board.generator';
-import { setBoxSize } from './game/game.actions';
+import { boardToDraw } from '../../shared/game/board.generator';
+import { setBoxSize } from '../../shared/game/game.actions';
 import { throttle } from 'lodash';
 
 function calculateBoxSize(boardLength: number, padding: number = 2) {

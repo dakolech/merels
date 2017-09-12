@@ -1,45 +1,14 @@
-import { board, playerPawns, boardToDraw, millSize, Board, BoardToDraw, BoardCell } from './board.generator';
+import { board, playerPawns, boardToDraw, millSize, BoardCell } from '../../../shared/game/board.generator';
 import {
   SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
   SET_NEXT_MOVE_TEXT, SET_MILL_IN_BOX, CHANGE_ACTION_TYPE, HIGHLIGHT_AVAILABLE_PAWN,
   CLEAN_HIGHLIGHTED_PAWNS, HIGHLIGHT_AVAILABLE_BOX, CACHE_PAWN_POSITION, REMOVE_MILL_IN_BOX,
   HIGHLIGHT_ALL_AVAILABLE_BOXES, SET_WINNER, RESET_GAME, SetPawnType, PlayerPawnType, NextMoveType, ActionType,
   PlayerType, DECREASE_PAWNS_FROM_BOARD, SET_BOX_SIZE
-} from './game.actions';
-import { putPawnMessage } from './game.messages';
+} from '../../../shared/game/game.actions';
+import { putPawnMessage } from '../../../shared/game/game.messages';
 import { assocPath, evolve, dec, inc, pipe, assoc, adjust } from 'ramda';
-import { SimpleCell } from './game.saga';
-
-export const PLAYER1 = 'PLAYER1';
-export const PLAYER2 = 'PLAYER2';
-export const PUT_ACTION = 'PUT_ACTION';
-export const TAKE_ACTION = 'TAKE_ACTION';
-export const SELECT_TO_MOVE = 'SELECT_TO_MOVE';
-export const SELECT_TO_JUMP = 'SELECT_TO_JUMP';
-export const MOVE_ACTION = 'MOVE_ACTION';
-export const TAKE_AFTER_MOVE_ACTION = 'TAKE_AFTER_MOVE_ACTION';
-export const END_GAME = 'END_GAME';
-
-export interface PLAYER {
-  pawnsInHand: number;
-  pawnsOnBoard: number;
-  color: string;
-  name: string;
-}
-
-export interface GameState {
-  board: Board;
-  boardToDraw: BoardToDraw;
-  currentPlayer: string;
-  currentAction: string;
-  boxSize: number;
-  nextMove: string;
-  millSize: number;
-  cacheSelectedPawn: SimpleCell;
-  winner: string;
-  PLAYER1: PLAYER;
-  PLAYER2: PLAYER;
-}
+import { GameState, PLAYER1, PLAYER2, PUT_ACTION } from '../../../shared/game/game.helpers';
 
 export const initialStateGame: GameState = {
   board,

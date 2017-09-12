@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { PLAYER, PLAYER1, PLAYER2 } from '../../game.reducer';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
+import { PLAYER, PLAYER1, PLAYER2 } from '../../../../../shared/game/game.helpers';
 interface PlayerTabProps {
   player: PLAYER;
 }
