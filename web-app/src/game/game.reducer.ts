@@ -1,14 +1,14 @@
-import { board, playerPawns, boardToDraw, millSize, BoardCell } from '../../../shared/game/board.generator';
+import { board, playerPawns, boardToDraw, millSize, BoardCell } from 'merels-shared';
 import {
   SET_PAWN, NEXT_PLAYER, REMOVE_PAWN_FROM_HAND, REMOVE_PAWN_FROM_BOARD,
   SET_NEXT_MOVE_TEXT, SET_MILL_IN_BOX, CHANGE_ACTION_TYPE, HIGHLIGHT_AVAILABLE_PAWN,
   CLEAN_HIGHLIGHTED_PAWNS, HIGHLIGHT_AVAILABLE_BOX, CACHE_PAWN_POSITION, REMOVE_MILL_IN_BOX,
   HIGHLIGHT_ALL_AVAILABLE_BOXES, SET_WINNER, RESET_GAME, SetPawnType, PlayerPawnType, NextMoveType, ActionType,
   PlayerType, DECREASE_PAWNS_FROM_BOARD, SET_BOX_SIZE
-} from '../../../shared/game/game.actions';
-import { putPawnMessage } from '../../../shared/game/game.messages';
+} from 'merels-shared';
+import { putPawnMessage } from 'merels-shared';
 import { assocPath, evolve, dec, inc, pipe, assoc, adjust } from 'ramda';
-import { GameState, PLAYER1, PLAYER2, PUT_ACTION } from '../../../shared/game/game.helpers';
+import { GameState, PLAYER1, PLAYER2, PUT_ACTION } from 'merels-shared';
 
 export const initialStateGame: GameState = {
   board,

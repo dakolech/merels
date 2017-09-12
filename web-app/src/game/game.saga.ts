@@ -1,8 +1,8 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { NEXT_MOVE } from '../../../shared/game/game.actions';
-import { gameLogic } from '../../../shared/game/game.logic';
+import { NEXT_MOVE } from 'merels-shared';
+import { gameLogic } from 'merels-shared';
 import { map } from 'ramda';
-import { GameState, SimpleCell } from '../../../shared/game/game.helpers';
+import { GameState, SimpleCell } from 'merels-shared';
 
 
 // tslint:disable-next-line:no-any

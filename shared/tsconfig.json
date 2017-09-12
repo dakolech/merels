@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "esnext",
+    "outDir": "js",
+    "module": "commonjs",
+    "declaration": true,
     "target": "es5",
-    "lib": ["es6", "dom"],
+    "lib": ["dom", "es2017"],
     "sourceMap": true,
-    "allowJs": true,
     "jsx": "react",
     "moduleResolution": "node",
-    "rootDir": "src",
+    "rootDir": "game",
     "forceConsistentCasingInFileNames": true,
     "noImplicitReturns": true,
     "noImplicitThis": true,
@@ -17,6 +18,15 @@
     "noUnusedLocals": true
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "build",
+    "scripts",
+    "acceptance-tests",
+    "webpack",
+    "jest",
+    "src/setupTests.ts"
+  ],
+  "files": [
+    "./game/index.ts"
   ]
 }

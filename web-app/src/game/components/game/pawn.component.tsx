@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BoardCell } from '../../../../../shared/game/board.generator';
+import { BoardCell } from 'merels-shared';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
-import { PLAYER1, PLAYER2 } from '../../../../../shared/game/game.helpers';
+import { PLAYER1, PLAYER2 } from 'merels-shared';
 
 interface OwnProps {
   box: BoardCell;

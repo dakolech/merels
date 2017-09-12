@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { connect, Dispatch } from 'react-redux';
-import { BoardCell } from '../../../../../shared/game/board.generator';
+import { BoardCell } from 'merels-shared';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
 import { PawnComponent } from './pawn.component';
 import { bindActionCreators } from 'redux';
-import { Action, nextMove, SetPawnType } from '../../../../../shared/game/game.actions';
+import { Action, nextMove, SetPawnType } from 'merels-shared';
 
 interface OwnProps {
   column: number;

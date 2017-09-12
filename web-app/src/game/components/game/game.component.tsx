@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BoardToDraw } from '../../../../../shared/game/board.generator';
+import { BoardToDraw } from 'merels-shared';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
