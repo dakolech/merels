@@ -22,7 +22,10 @@ export const END_GAME = 'END_GAME';
 
 export const padding = 2;
 
-const boxSize = Math.floor(((window.innerWidth - (padding * 2)) / boardToDraw.length));
+const boxSize = Math.min(
+  Math.floor(((window.innerWidth - (padding * 2)) / boardToDraw.length)),
+  Math.floor(((window.innerHeight - (padding * 2)) / boardToDraw.length))
+);
 
 export interface PLAYER {
   pawnsInHand: number;
