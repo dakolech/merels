@@ -9,8 +9,6 @@ before_script:
 - npm run init
 after_success:
 - cd build
-- echo $FTP_PASSWORD
-- "$FTP_PASSWORD"
 - find . -type f -exec curl --ftp-create-dirs -T {} -u $FTP_USER:$FTP_PASSWORD ftp://s16.mydevil.net/public_nodejs/public/\{\}
   \;
 notifications:
@@ -20,3 +18,4 @@ env:
   global:
   - secure: ko8ExmQkQp/owIM5ClvqnRhDluhVmHE0wxNjA2v7QQxOIyzC9zTEf/dmNBKrhQazQ4QBAqjOe+WUUVXaZkuGWk4HFzpugD5MwNbwKOyXFCUX7CybXk8JXgMtSFiaCEiybFQiBSfokgzlxK/ZV+UFJVV8M+lBK8mjiDK78nUyvmgXfv96i2y3Is3fkyXxK861beC4+AG3seKx3+wBU6PtYl5sfat170nf4dbDoHMoImgwHcqOB8QP1a+Mfz3YYVvzy3Ax6fK2MbcLW/9/d2Jzs4qDpnrrQq3xuIPI8EYuTQu/Hfme8T09I7TW0AV2DQM8tTMn8QYwm4ab9GvwQ21LBn1rBr0RqSpNU2o+COcuXF898NN6bQy1jbgK+HFxr33/sULPDF2HwfFrNloKqITuUJoX6x0zd2Q2HI4hVb2OaI8XmnWu9HdR+8CnYoceZqCXY+hgrLO/wc+NoxvH1x26vABxZFU/DiGukT9/QFBZ8bl9o8fMNzCZyInTGnCgfm290/6EEeTbTJMKwtyX+nuxLRa/W364iATthFM4zPlKceYyDpnODhga3D8yTvJqPTNFX30Mv1X7DJ7nNEtetXUiJ3MH1PrjD5r53wz2/hYUnA2B5hoj0xzY90lWS/IUlWA88OBL9fkZ7E6V1dn/R54v+53VSMP66udx9c6DAOL7Srk=
   - secure: NygMWWA565FurMmbgZy9YL+2V2GqyJd3AyQepbNTdGTVee2z5sXtfEqYGq1f4UzWixHVNeifCz0xEaCo2fk6WPI6Mnuv4QaCBkl/6hJjspymumowx/JY9pIpvBK+KcDf8sMAtCgSLcypp8tO2oTG9uimx3W+6Mf1o2wvqSubzQ7lpsk4zW8M/KaWtgN9w1Tjto4IgH1xbHbDIPd4qBpcI3uWBAZA6xQSdsHp5tZuUgc2pMd2F+476oIqblljp9mgplaAFBb1651mEsCmth6QKCZ1pCKmAtGKhxfBi8ticqHNp0CFnI0D5XC/yQX+yl3iQsd6wbqNIN7LV2Z88MSpEPckQC4Eiz1KF0IDiTC1CL1j+yvY5iq+hV+qdoWSqsh/yjeEI4ZrF8bFJyk5p6L0bsx31VB368zUesyL4HDvBVKeBt32ReMI/XOFWhrJmym+HsrOtUfMJ9E0c/DEadkn7J2nLmDeyClr5lZKqy63OpGao/7c/48r4vJaDoV96f5+zOofenaXVjgKXD1hTacYzsyGE0bNMZwxK4gKXMKIJrJFMz9X6Eq1oOIAim5wlpfUL1PFXT0k9rG0vJWk5XTDbx2lZQHLZnle7mDzhTt4G7iI0W7qBUwYVp+WG3j9XB8gJD/2FJXrKRjufsZY/qUpPN8QCQ9CTtao6/8Y32LchJ8=
+  - REACT_APP_BRANCH=$TRAVIS_BRANCH
