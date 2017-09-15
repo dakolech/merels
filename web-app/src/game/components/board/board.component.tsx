@@ -21,8 +21,7 @@ const Cell = styled.div`
 
 const Container = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 20px;
 `;
 
 function Board(props: Props) {

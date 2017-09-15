@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
+import { AppComponent } from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
@@ -12,8 +12,8 @@ import { throttle } from 'lodash';
 function calculateBoxSize(boardLength: number, padding: number = 2) {
   return {
     boxSize: Math.min(
-      Math.floor(((window.innerWidth - (padding * 2)) / boardLength)),
-      Math.floor(((window.innerHeight - (padding * 2)) / boardLength))
+      Math.floor(((window.innerWidth - (padding * 2) - 40) / boardLength)),
+      Math.floor(((window.innerHeight - (padding * 2) - 40) / boardLength))
     )
   };
 }
@@ -32,7 +32,7 @@ store.dispatch(setBoxSize(calculateBoxSize(boardToDraw.length)));
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <AppComponent />
   </Provider>,
   document.getElementById('root') as HTMLElement
 );

@@ -18,30 +18,70 @@ interface Props {
   resetGame: () => Action;
 }
 
+const Container = styled.div`
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 2;
+  grid-row-end: 2;
+`;
+
+const TopContainer = styled.div`
+  grid-column-start: 3;
+  grid-column-end: 3;
+  grid-row-start: 1;
+  grid-row-end: 1;
+`;
+
+const NextMoveContainer = TopContainer.extend`
+  justify-self: center;
+  margin-top: 10px;
+`;
+
+const PlayersContainer = Container.extend`
+  justify-content: center;
+  align-items: center;
+  display: flex;
+`;
+
+const ResetContainer = TopContainer.extend`
+  justify-self: flex-end;
+  margin-right: 26px;
+  margin-top: 5px;
+  cursor: pointer;
+  padding: 10px;
+  border: 1px solid black;
+  line-height: 10px;
+  height: 10px;
+`;
+
 function BoardContainer(props: Props) {
-  const Container = styled.div`
-     height: ${(props.boxSize * props.board.length) + (2 * 20)}px;
-     position: relative;
+  const Main = styled.div`
+    display: grid;
+    grid-template-columns: auto 20px ${(props.boxSize * props.board.length)}px 20px auto;
+    grid-template-rows: 20px ${(props.boxSize * props.board.length)}px 20px;
   `;
+//   const Container = styled.div`
+//      height: ${(props.boxSize * props.board.length)}px;
+//      width: ${(props.boxSize * props.board.length)}px;
+//      position: relative;
+//   `;
 
   return (
-    <div>
-      <div>
-        <Container>
-          <BoardComponent />
-          <GameComponent />
-        </Container>
-        <div>
-          <NextMoveComponent />
-        </div>
-        <div>
-          <PlayersComponent />
-        </div>
-        <div>
-          <span onClick={() => props.resetGame()}> Reset Game </span>
-        </div>
-      </div>
-    </div>
+    <Main>
+      <Container>
+        <BoardComponent />
+        <GameComponent />
+      </Container>
+      <NextMoveContainer>
+        <NextMoveComponent />
+      </NextMoveContainer>
+      <PlayersContainer>
+        <PlayersComponent />
+      </PlayersContainer>
+      <ResetContainer>
+        <span onClick={() => props.resetGame()}> Reset Game </span>
+      </ResetContainer>
+    </Main>
   );
 }
 
