@@ -12,8 +12,8 @@ import { throttle } from 'lodash';
 function calculateBoxSize(boardLength: number, padding: number = 2) {
   return {
     boxSize: Math.min(
-      Math.floor(((window.innerWidth - (padding * 2) - 40) / boardLength)),
-      Math.floor(((window.innerHeight - (padding * 2) - 40) / boardLength))
+      Math.floor(((window.innerWidth - (padding * 2) - 40 - 50) / boardLength)),
+      Math.floor(((window.innerHeight - (padding * 2) - 40 - 50) / boardLength))
     )
   };
 }
