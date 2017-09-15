@@ -43,6 +43,11 @@ const Version = styled.div`
     border: 1px solid yellow;
     border-radius: 10%;
     text-align: left;
+    
+    a {
+      color: white;
+      text-decoration: none;
+    }
    }
   
   &:hover {
