@@ -100,7 +100,7 @@ function testGameLogic(
 
     beforeAll(() => {
       returnedActions = gameLogic(row, column, initialState);
-      returnedState = returnedActions.reduce((state, action) => {
+      returnedState = returnedActions.reduce((state: GameState, action: any) => {
         return gameReducer(state, action as any);
       }, initialState.game);
     });
