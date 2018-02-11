@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
-import { PLAYER, PLAYER1, PLAYER2 } from 'merels-shared';
+import { PLAYER, PLAYER1, PLAYER2 } from '../../../shared';
 interface PlayerTabProps {
   player: PLAYER;
 }

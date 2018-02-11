@@ -31,9 +31,8 @@
     "typescript": "^2.5.1"
   },
   "scripts": {
-    "init": "npm link ../shared",
-    "start": "concurrently --kill-others \"cd ../shared && npm run watch\" \"react-scripts-ts start\"",
-    "build": "cd ../shared && npm run build && cd ../web-app && react-scripts-ts build",
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
     "eject": "react-scripts-ts eject"
   }

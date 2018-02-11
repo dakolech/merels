@@ -2,9 +2,9 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { path } from 'ramda';
 import { BoxComponent } from './box.component';
-import { BoardToDraw } from 'merels-shared';
+import { BoardToDraw } from '../../../shared';
 import styled from 'styled-components';
-import { GameState } from 'merels-shared';
+import { GameState } from '../../../shared';
 
 interface Props {
   board: BoardToDraw;

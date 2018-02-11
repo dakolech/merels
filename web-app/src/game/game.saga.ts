@@ -1,13 +1,14 @@
 import { put, takeEvery, select } from 'redux-saga/effects';
-import { NEXT_MOVE } from 'merels-shared';
-import { gameLogic } from 'merels-shared';
+import { NEXT_MOVE } from '../shared';
+import { gameLogic } from '../shared';
 import { map } from 'ramda';
-import { GameState, SimpleCell } from 'merels-shared';
+import { SimpleCell } from '../shared';
+import { AppState } from '../configureStore';
 
 // tslint:disable-next-line:no-any
 function* nextMove(action: any) {
   const { row, column } = action.payload as SimpleCell;
-  const state: GameState = yield select();
+  const state: AppState = yield select();
 
   yield map(put, gameLogic(row, column, state));
 

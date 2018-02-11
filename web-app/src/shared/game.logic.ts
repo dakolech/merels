@@ -8,10 +8,11 @@ import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage,
   setWinnerMessage } from './game.messages';
 import {
   PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE,
-  TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP, END_GAME, GameState, SimpleCell
+  TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP, END_GAME, SimpleCell
 } from './game.helpers';
 import { Board, BoardCell } from './board.generator';
 import { path, evolve, inc, append, assocPath, pipe, map, unnest } from 'ramda';
+import { AppState } from '../configureStore';
 
 interface PawnCounter {
   counter: number;
@@ -192,7 +193,7 @@ function handleTakeMove(
 
 const moveOrJump = (pawns: number) => pawns === 3 ? SELECT_TO_JUMP : SELECT_TO_MOVE;
 
-export function gameLogic(row: number, column: number, state: GameState): Action[] {
+export function gameLogic(row: number, column: number, state: AppState): Action[] {
   const player: string = path(['game', 'currentPlayer'], state);
   const opponent = player === PLAYER1 ? PLAYER2 : PLAYER1;
   const pawnsInHand: number = path(['game', player, 'pawnsInHand'], state);

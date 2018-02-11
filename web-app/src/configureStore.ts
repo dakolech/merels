@@ -3,8 +3,8 @@ import { routerReducer, routerMiddleware } from 'react-router-redux';
 import createHistory from 'history/createBrowserHistory';
 import createSagaMiddleware from 'redux-saga';
 import { fork } from 'redux-saga/effects';
-import { gameReducer as game, gameSaga } from './game';
-import { GameState } from 'merels-shared';
+import { gameSaga } from './game';
+import { GameState, gameReducer as game } from './shared';
 
 export const history = createHistory();
 const sagaMiddleware = createSagaMiddleware();

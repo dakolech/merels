@@ -5,8 +5,8 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
 import { store } from './configureStore';
-import { boardToDraw } from 'merels-shared';
-import { setBoxSize } from 'merels-shared';
+import { boardToDraw } from './shared';
+import { setBoxSize } from './shared';
 import { throttle } from 'lodash';
 
 function calculateBoxSize(boardLength: number, padding: number = 2) {

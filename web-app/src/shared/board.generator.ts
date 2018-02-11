@@ -1,10 +1,14 @@
+import { PLAYER1, PLAYER2 } from './game.helpers';
+
 const pawnBox = '*';
 const horizontalConnection = '-';
 const verticalConnection = '|';
 const newLine = '!';
+// PLAYER1 pawns: 0 - is not in mill, 1 - is in one mill, 2 - is in two mills
+// PLAYER2 pawns: 5 - is not in mill, 6 - is in one mill, 7 - is in two mills
 
 const nineMerelsBoard = `
-*-----*-----*!
+0-----*-----*!
 |     |     |!
 | *---*---* |!
 | |   |   | |!
@@ -83,7 +87,11 @@ export type BoardColumn = BoardCell[];
 export type Board = BoardCell[][];
 export type BoardToDraw = string[][];
 
-function generateBoard(boardString: string): Board {
+function isPawnBox(char: string|boolean) {
+  return char === pawnBox || (Number(char) >= 0 && char !== ' ');
+}
+
+export function generateBoard(boardString: string): Board {
   const splittedBoard: string[] = boardString.replace(/(\r\n|\n|\r)/gm, '').split(newLine).filter(Boolean);
   const horizontalSize = splittedBoard.length;
   const verticalSize = splittedBoard[0].length;
@@ -97,16 +105,16 @@ function generateBoard(boardString: string): Board {
       const northChar = horIndex > 0 ? splittedBoard[horIndex - 1][vertIndex] : false;
       const southChar = horIndex < horizontalSize - 1 ? splittedBoard[horIndex + 1][vertIndex] : false;
       generatedBoard[vertIndex][horIndex] = {
-        isPawnBox: char === pawnBox,
-        N: northChar === verticalConnection || (northChar === pawnBox && char === verticalConnection),
-        S: southChar === verticalConnection || (southChar === pawnBox && char === verticalConnection),
-        W: westChar === horizontalConnection || (westChar === pawnBox && char === horizontalConnection),
-        E: eastChar === horizontalConnection || (eastChar === pawnBox && char === horizontalConnection),
-        pawn: '',
+        isPawnBox: isPawnBox(char),
+        N: northChar === verticalConnection || (isPawnBox(northChar) && char === verticalConnection),
+        S: southChar === verticalConnection || (isPawnBox(southChar) && char === verticalConnection),
+        W: westChar === horizontalConnection || (isPawnBox(westChar) && char === horizontalConnection),
+        E: eastChar === horizontalConnection || (isPawnBox(eastChar) && char === horizontalConnection),
+        pawn: Number(char) > 4 ? PLAYER2 : (Number(char) >= 0 && char !== ' ') ? PLAYER1 : '',
         row: horIndex,
         column: vertIndex,
         isHighlighted: false,
-        isInMill: 0,
+        isInMill: (Number(char) >= 0 && char !== ' ') ? Number(char) % 5 : 0,
         id: `${horIndex}-${vertIndex}`
       };
     }
