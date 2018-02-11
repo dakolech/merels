@@ -6,7 +6,6 @@ script:
 before_script:
 - cd web-app
 - npm install
-- npm run init
 after_success:
 - cd build
 - find . -type f -exec curl --ftp-create-dirs -T {} -u $FTP_USER:$FTP_PASSWORD ftp://s16.mydevil.net/public_nodejs/public/\{\}

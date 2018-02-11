@@ -1,8 +1,6 @@
 import { gameLogic } from './game.logic';
 import { Board, generateBoard } from './board.generator';
 import { GameState, PLAYER1, PLAYER2, PUT_ACTION } from './game.helpers';
-// import { setNextMoveText, setPawn, removePawnFromHand, nextPlayer } from './game.actions';
-// import { contains } from 'ramda';
 import { putPawnMessage } from './game.messages';
 import { gameReducer } from './game.reducer';
 
@@ -11,7 +9,7 @@ interface AppState {
 }
 const player1Name = "Player 1";
 const player2Name = "Player 2";
-let returnedActions;
+let returnedActions: any;
 let returnedState: any;
 
 interface PawnsInterface {
