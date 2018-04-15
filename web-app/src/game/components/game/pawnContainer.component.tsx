@@ -26,7 +26,7 @@ function PawnContainer(props: OwnProps&StateProps): any {
     height: 100%;
     cursor: pointer;
     background-color: ${props.box.isHighlighted ? 'rgba(0,0,255,0.5)' : 'rgba(0,0,0,0)'};
-    border: 1px solid ${props.box.isInMill ? 'rgba(0,255,0,0.5)' : 'rgba(0,0,0,0)'}
+    border: 1px solid ${props.box.includedMills ? 'rgba(0,255,0,0.5)' : 'rgba(0,0,0,0)'}
   `;
 
   return props.box.isPawnBox && (

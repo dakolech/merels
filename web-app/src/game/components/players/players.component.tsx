@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
-import { PLAYER, PLAYER1, PLAYER2 } from '../../../shared';
+import { PLAYER, PLAYERS } from '../../../shared';
 interface PlayerTabProps {
   player: PLAYER;
 }
@@ -49,8 +49,8 @@ function Players(props: PlayerProps) {
 }
 
 const mapStateToProps = (state: AppState) => ({
-  PLAYER1: path(['game', PLAYER1], state),
-  PLAYER2: path(['game', PLAYER2], state),
+  PLAYER1: path(['game', PLAYERS.P_1], state),
+  PLAYER2: path(['game', PLAYERS.P_2], state),
   boxSize: path(['game', 'boxSize'], state),
 });
 

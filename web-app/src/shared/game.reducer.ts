@@ -8,7 +8,7 @@ import {
 } from './game.actions';
 import { putPawnMessage } from './game.messages';
 import { assocPath, evolve, dec, inc, pipe, assoc, adjust } from 'ramda';
-import { GameState, PLAYER1, PLAYER2, PUT_ACTION } from './game.helpers';
+import { ACTIONS, GameState, PLAYERS } from './game.helpers';
 
 export const initialStateGame: GameState = {
   board,
@@ -25,8 +25,8 @@ export const initialStateGame: GameState = {
     color: '#0F0',
     name: 'Player 2',
   },
-  currentPlayer: PLAYER1,
-  currentAction: PUT_ACTION,
+  currentPlayer: PLAYERS.P_1,
+  currentAction: ACTIONS.PUT,
   boxSize: 0,
   nextMove: putPawnMessage('Player 1'),
   millSize,
@@ -43,7 +43,7 @@ const updateCell = (col: number, row: number, fn: (...args: any[]) => any) =>
     board: adjust(
       adjust(
         evolve({
-          isInMill: fn
+          includedMills: fn
         }),
         row
       ),
@@ -56,7 +56,7 @@ const actions = {
     assocPath<string, GameState>(['board', payload.column, payload.row, 'pawn'], state.currentPlayer)(state),
   [NEXT_PLAYER]: (payload: SetPawnType) => (state: GameState) => ({
     ...state,
-    currentPlayer: state.currentPlayer === PLAYER1 ? PLAYER2 : PLAYER1
+    currentPlayer: state.currentPlayer === PLAYERS.P_1 ? PLAYERS.P_2 : PLAYERS.P_1
   }),
   [REMOVE_PAWN_FROM_HAND]: (payload: PlayerPawnType) =>
     evolve<GameState>({
@@ -78,7 +78,7 @@ const actions = {
     ...state,
     board: state.board.map(row =>
       row.map((box: BoardCell) =>
-        box.isPawnBox && !box.isInMill && box.pawn === payload.player ?
+        box.isPawnBox && !box.includedMills && box.pawn === payload.player ?
           { ...box, isHighlighted: true } :
           box,
       ),

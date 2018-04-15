@@ -27,8 +27,9 @@
     "@types/react-router": "^4.0.14",
     "@types/react-router-redux": "^5.0.4",
     "@types/redux": "^3.6.0",
+    "@types/lodash": "^4.14.107",
     "concurrently": "^3.5.0",
-    "typescript": "^2.5.1"
+    "typescript": "^2.8.1"
   },
   "scripts": {
     "start": "react-scripts-ts start",

@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { BoardCell } from '../../../shared';
+import { BoardCell, PLAYERS } from '../../../shared';
 import { AppState } from '../../../configureStore';
 import { path } from 'ramda';
 import styled from 'styled-components';
-import { PLAYER1, PLAYER2 } from '../../../shared';
 
 interface OwnProps {
   box: BoardCell;
@@ -25,8 +24,8 @@ function Pawn(props: OwnProps&StateProps) {
 }
 
 const mapStateToProps = (state: AppState): StateProps => ({
-  PLAYER1: path(['game', PLAYER1, 'color'], state),
-  PLAYER2: path(['game', PLAYER2, 'color'], state),
+  PLAYER1: path(['game', PLAYERS.P_1, 'color'], state),
+  PLAYER2: path(['game', PLAYERS.P_2, 'color'], state),
 });
 
 // tslint:disable-next-line:no-any

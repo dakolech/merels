@@ -7,8 +7,7 @@ import {
 import { putPawnMessage, removePawnMessage, selectPawnMessage, movePawnMessage,
   setWinnerMessage } from './game.messages';
 import {
-  PLAYER1, PLAYER2, PUT_ACTION, TAKE_ACTION, MOVE_ACTION, SELECT_TO_MOVE,
-  TAKE_AFTER_MOVE_ACTION, SELECT_TO_JUMP, END_GAME, SimpleCell
+  SimpleCell, PLAYERS, ACTIONS
 } from './game.helpers';
 import { Board, BoardCell } from './board.generator';
 import { path, evolve, inc, append, assocPath, pipe, map, unnest } from 'ramda';
@@ -38,7 +37,7 @@ function getNextBox(board: Board, currentBox: BoardCell, direction: string): Boa
 
 function countPawnsInLine(
   board: Board,
-  player: string,
+  player: PLAYERS,
   selectedBox: BoardCell,
   direction: string,
   acc: PawnCounter = { counter: 0, boxes: [] }
@@ -60,7 +59,7 @@ function countPawnsInLine(
   return countPawnsInLine(board, player, getNextBox(board, selectedBox, direction), direction, newAcc);
 }
 
-function findMill(board: Board, selectedBox: BoardCell, player: string, cachedPawn?: BoardCell): MillObject {
+function findMill(board: Board, selectedBox: BoardCell, player: PLAYERS, cachedPawn?: BoardCell): MillObject {
   const newBoard = cachedPawn ?
     assocPath([cachedPawn.column, cachedPawn.row, 'pawn'], undefined, board)
     : board;
@@ -85,13 +84,13 @@ function setMillInBoxes(millObject: MillObject, direction: string): Action[] {
   )(millObject);
 }
 
-function countAvailablePawns(board: Board, player: string): number {
+function countAvailablePawns(board: Board, player: PLAYERS): number {
   return board
     .reduce(
       (accPar, currPar) =>
         currPar.reduce(
           (acc, curr) =>
-            curr.pawn === player && curr.isInMill === 0 ? acc + 1 : acc,
+            curr.pawn === player && curr.includedMills === 0 ? acc + 1 : acc,
           accPar),
       0);
 }
@@ -136,7 +135,7 @@ function findExistedMill(
   if (!newBox || !selectedBox[direction]) {
     return newAcc;
   }
-  if (newBox.isInMill > 0) {
+  if (newBox.includedMills > 0) {
     newAcc = [...acc, {
       column: newBox.column,
       row: newBox.row,
@@ -159,7 +158,7 @@ function removeMillOnTheBoard(board: Board, selectedBox: BoardCell): Action[] {
 }
 
 function findMillOnTheBoard(
-  board: Board, selectedBox: BoardCell, player: string, millSize: number, cachedPawn?: BoardCell
+  board: Board, selectedBox: BoardCell, player: PLAYERS, millSize: number, cachedPawn?: BoardCell
 ): Action[] {
   const millObject = findMill(board, selectedBox, player, cachedPawn);
   const isVerticalMill = isLineMill(millObject, 'N', 'S', millSize);
@@ -176,7 +175,7 @@ function findMillOnTheBoard(
 }
 
 function handleTakeMove(
-  board: Board, opponent: string, column: number, row: number, playerName: string, action: string
+  board: Board, opponent: PLAYERS, column: number, row: number, playerName: string, action: ACTIONS
 ): Action[] {
   const availableOpponentPawns = countAvailablePawns(board, opponent);
 
@@ -191,11 +190,11 @@ function handleTakeMove(
   return [];
 }
 
-const moveOrJump = (pawns: number) => pawns === 3 ? SELECT_TO_JUMP : SELECT_TO_MOVE;
+const moveOrJump = (pawns: number) => pawns === 3 ? ACTIONS.SELECT_TO_JUMP : ACTIONS.SELECT_TO_MOVE;
 
 export function gameLogic(row: number, column: number, state: AppState): Action[] {
-  const player: string = path(['game', 'currentPlayer'], state);
-  const opponent = player === PLAYER1 ? PLAYER2 : PLAYER1;
+  const player: PLAYERS = path(['game', 'currentPlayer'], state);
+  const opponent = player === PLAYERS.P_1 ? PLAYERS.P_2 : PLAYERS.P_1;
   const pawnsInHand: number = path(['game', player, 'pawnsInHand'], state);
   const opponentPawnsInHand: number = path(['game', opponent, 'pawnsInHand'], state);
   const pawnsOnBoard: number = path(['game', player, 'pawnsOnBoard'], state);
@@ -204,13 +203,13 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
   const playerName: string = path(['game', player, 'name'], state);
   const board: Board = path(['game', 'board'], state);
   const millSize: number = path(['game', 'millSize'], state);
-  const currentAction: string = path(['game', 'currentAction'], state);
+  const currentAction: ACTIONS = path(['game', 'currentAction'], state);
   const selectedBox: BoardCell = path([column, row], board);
   const cachedPawn: BoardCell = path(['game', 'cacheSelectedPawn'], state);
 
   let returnedActions: Action[] = [];
 
-  if (pawnsInHand > 0 && currentAction === PUT_ACTION && !selectedBox.pawn) {
+  if (pawnsInHand > 0 && currentAction === ACTIONS.PUT && !selectedBox.pawn) {
     returnedActions.push(setPawn({ row, column }));
     returnedActions.push(removePawnFromHand({ player }));
     if (pawnsInHand <= 7) {
@@ -218,13 +217,15 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
       returnedActions = returnedActions.concat(foundMill);
 
       if (foundMill.length) {
-        returnedActions = returnedActions.concat(handleTakeMove(board, opponent, column, row, playerName, TAKE_ACTION));
+        returnedActions = returnedActions.concat(
+          handleTakeMove(board, opponent, column, row, playerName, ACTIONS.TAKE)
+        );
       } else {
         returnedActions.push(setNextMoveText({ text: putPawnMessage(opponentName) }));
         returnedActions.push(nextPlayer());
       }
       if (opponentPawnsInHand === 0 && pawnsInHand === 1 && !foundMill.length) {
-        returnedActions.push(changeActionType({ type: SELECT_TO_MOVE }));
+        returnedActions.push(changeActionType({ type: ACTIONS.SELECT_TO_MOVE }));
         returnedActions.push(setNextMoveText({ text: selectPawnMessage(opponentName) }));
       }
     } else {
@@ -233,30 +234,33 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
     }
   }
 
-  if (currentAction === TAKE_ACTION &&
+  if (currentAction === ACTIONS.TAKE &&
     selectedBox.pawn &&
     selectedBox.isHighlighted &&
-    selectedBox.isInMill === 0
+    selectedBox.includedMills === 0
   ) {
     returnedActions.push(removePawnFromBoard({ row, column, player: opponent }));
     returnedActions.push(decreasePawnsFromBoard({ player: opponent }));
     if (opponentPawnsInHand === 0 && pawnsInHand === 0) {
-      returnedActions.push(changeActionType({ type: SELECT_TO_MOVE }));
+      returnedActions.push(changeActionType({ type: ACTIONS.SELECT_TO_MOVE }));
       returnedActions.push(setNextMoveText({ text: selectPawnMessage(opponentName) }));
     } else {
       returnedActions.push(setNextMoveText({ text: putPawnMessage(opponentName) }));
-      returnedActions.push(changeActionType({ type: PUT_ACTION }));
+      returnedActions.push(changeActionType({ type: ACTIONS.PUT }));
     }
     returnedActions.push(cleanHighlightedPawns());
     returnedActions.push(nextPlayer());
 
-    if (opponentPawnsInHand === 0 && pawnsInHand === 1 && currentAction !== TAKE_ACTION) {
+    if (opponentPawnsInHand === 0 && pawnsInHand === 1 && currentAction !== ACTIONS.TAKE) {
       returnedActions.push(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
       returnedActions.push(setNextMoveText({ text: selectPawnMessage(opponentName) }));
     }
   }
 
-  if ((currentAction === SELECT_TO_MOVE || currentAction === SELECT_TO_JUMP) && selectedBox.pawn === player) {
+  if (
+    (currentAction === ACTIONS.SELECT_TO_MOVE || currentAction === ACTIONS.SELECT_TO_JUMP) &&
+    selectedBox.pawn === player
+  ) {
     let availableBoxes = { length: 1 };
     if (pawnsOnBoard === 3) {
       returnedActions.push(highlightAllAvailableBoxes());
@@ -265,12 +269,12 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
     }
     if (availableBoxes.length > 0) {
       returnedActions.push(cachePawnPosition({ row, column }));
-      returnedActions.push(changeActionType({ type: MOVE_ACTION }));
+      returnedActions.push(changeActionType({ type: ACTIONS.MOVE }));
       returnedActions.push(setNextMoveText({ text: movePawnMessage(playerName) }));
     }
   }
 
-  if (currentAction === MOVE_ACTION && selectedBox.pawn === player) {
+  if (currentAction === ACTIONS.MOVE && selectedBox.pawn === player) {
     returnedActions.push(cleanHighlightedPawns());
     if (pawnsOnBoard === 3) {
       returnedActions.push(highlightAllAvailableBoxes());
@@ -280,13 +284,13 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
     returnedActions.push(cachePawnPosition({ row, column }));
   }
 
-  if (currentAction === MOVE_ACTION && selectedBox.isHighlighted) {
+  if (currentAction === ACTIONS.MOVE && selectedBox.isHighlighted) {
     returnedActions.push(removePawnFromBoard({ row: cachedPawn.row, column: cachedPawn.column, player }));
     returnedActions.push(setPawn({ row, column }));
     returnedActions.push(cleanHighlightedPawns());
 
     const cachedPawnBox: BoardCell = path([cachedPawn.column, cachedPawn.row], board);
-    if (cachedPawnBox.isInMill > 0) {
+    if (cachedPawnBox.includedMills > 0) {
       returnedActions.push(removeMillInBox({ row: cachedPawnBox.row, column: cachedPawnBox.column }));
       returnedActions = returnedActions.concat(removeMillOnTheBoard(board, cachedPawnBox));
     }
@@ -296,7 +300,7 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
 
     if (foundMill.length) {
       returnedActions =
-        returnedActions.concat(handleTakeMove(board, opponent, column, row, playerName, TAKE_AFTER_MOVE_ACTION));
+        returnedActions.concat(handleTakeMove(board, opponent, column, row, playerName, ACTIONS.TAKE_AFTER_MOVE));
     } else {
       returnedActions.push(setNextMoveText({ text: selectPawnMessage(opponentName) }));
       returnedActions.push(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));
@@ -304,10 +308,10 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
     }
   }
 
-  if (currentAction === TAKE_AFTER_MOVE_ACTION &&
+  if (currentAction === ACTIONS.TAKE_AFTER_MOVE &&
     selectedBox.pawn &&
     selectedBox.isHighlighted &&
-    selectedBox.isInMill === 0
+    selectedBox.includedMills === 0
   ) {
     returnedActions.push(removePawnFromBoard({ row, column, player: opponent }));
     returnedActions.push(decreasePawnsFromBoard({ player: opponent }));
@@ -315,7 +319,7 @@ export function gameLogic(row: number, column: number, state: AppState): Action[
       returnedActions.push(setWinner({ player }));
       returnedActions.push(setNextMoveText({ text: setWinnerMessage(playerName) }));
       returnedActions.push(cleanHighlightedPawns());
-      returnedActions.push(changeActionType({ type: END_GAME }));
+      returnedActions.push(changeActionType({ type: ACTIONS.END_GAME }));
     } else {
       returnedActions.push(setNextMoveText({ text: selectPawnMessage(opponentName) }));
       returnedActions.push(changeActionType({ type: moveOrJump(opponentPawnsOnBoard) }));

@@ -1,11 +1,40 @@
-import { PLAYER1, PLAYER2 } from './game.helpers';
+import { PLAYERS } from './game.helpers';
+import { contains } from 'ramda';
 
-const pawnBox = '*';
+const emptyPawnBox = '*';
 const horizontalConnection = '-';
 const verticalConnection = '|';
 const newLine = '!';
-// PLAYER1 pawns: 0 - is not in mill, 1 - is in one mill, 2 - is in two mills
-// PLAYER2 pawns: 5 - is not in mill, 6 - is in one mill, 7 - is in two mills
+
+export enum PawnBox {
+  P1_NOT_MILL = '0',
+  P1_ONE_MILL = '1',
+  P1_TWO_MILLS = '2',
+  P1_NOT_MILL_H = '3',
+  P1_ONE_MILL_H = '4',
+  P1_TWO_MILLS_H = '5',
+  P2_NOT_MILL = '8',
+  P2_ONE_MILL = '9',
+  P2_TWO_MILLS = 'A',
+  P2_NOT_MILL_H = 'B',
+  P2_ONE_MILL_H = 'C',
+  P2_TWO_MILLS_H = 'D',
+}
+
+const highLightedBoxes: PawnBox[] = [
+  PawnBox.P1_NOT_MILL_H, PawnBox.P1_ONE_MILL_H, PawnBox.P1_TWO_MILLS_H,
+  PawnBox.P2_NOT_MILL_H, PawnBox.P2_ONE_MILL_H, PawnBox.P2_TWO_MILLS_H,
+];
+
+const inOneMillBoxes: PawnBox[] = [
+  PawnBox.P1_ONE_MILL, PawnBox.P1_ONE_MILL_H,
+  PawnBox.P2_ONE_MILL, PawnBox.P2_ONE_MILL_H,
+];
+
+const inTwoMillsBoxes: PawnBox[] = [
+  PawnBox.P1_TWO_MILLS, PawnBox.P1_TWO_MILLS_H,
+  PawnBox.P2_TWO_MILLS, PawnBox.P2_TWO_MILLS_H,
+];
 
 const nineMerelsBoard = `
 0-----*-----*!
@@ -79,7 +108,7 @@ export interface BoardCell {
   row: number;
   column: number;
   isHighlighted: boolean;
-  isInMill: number;
+  includedMills: number;
   id: string;
 }
 
@@ -87,8 +116,32 @@ export type BoardColumn = BoardCell[];
 export type Board = BoardCell[][];
 export type BoardToDraw = string[][];
 
-function isPawnBox(char: string|boolean) {
-  return char === pawnBox || (Number(char) >= 0 && char !== ' ');
+function isPawnBox(char: string|undefined): boolean {
+  return char === emptyPawnBox || (parseInt(char as string, 16) >= 0 && char !== ' ');
+}
+
+function isHighLighted(char: string): boolean {
+  return contains(char, highLightedBoxes);
+}
+
+function howManyMills(char: string): number {
+  if (contains(char, inOneMillBoxes)) {
+    return 1;
+  }
+
+  if (contains(char, inTwoMillsBoxes)) {
+    return 2;
+  }
+
+  return 0;
+}
+
+function isPlayer2Pawn(char: string): boolean {
+  return parseInt(char, 16) >= 8;
+}
+
+function isPlayer1Pawn(char: string): boolean {
+  return parseInt(char, 16) >= 0 && parseInt(char, 16) < 8;
 }
 
 export function generateBoard(boardString: string): Board {
@@ -100,21 +153,21 @@ export function generateBoard(boardString: string): Board {
   for (let vertIndex = 0; vertIndex < verticalSize; vertIndex++) {
     for (let horIndex = 0; horIndex < horizontalSize; horIndex++) {
       const char = splittedBoard[horIndex][vertIndex];
-      const westChar = vertIndex > 0 ? splittedBoard[horIndex][vertIndex - 1] : false;
-      const eastChar = vertIndex < verticalSize - 1 ? splittedBoard[horIndex][vertIndex + 1] : false;
-      const northChar = horIndex > 0 ? splittedBoard[horIndex - 1][vertIndex] : false;
-      const southChar = horIndex < horizontalSize - 1 ? splittedBoard[horIndex + 1][vertIndex] : false;
+      const westChar = vertIndex > 0 ? splittedBoard[horIndex][vertIndex - 1] : undefined;
+      const eastChar = vertIndex < verticalSize - 1 ? splittedBoard[horIndex][vertIndex + 1] : undefined;
+      const northChar = horIndex > 0 ? splittedBoard[horIndex - 1][vertIndex] : undefined;
+      const southChar = horIndex < horizontalSize - 1 ? splittedBoard[horIndex + 1][vertIndex] : undefined;
       generatedBoard[vertIndex][horIndex] = {
         isPawnBox: isPawnBox(char),
         N: northChar === verticalConnection || (isPawnBox(northChar) && char === verticalConnection),
         S: southChar === verticalConnection || (isPawnBox(southChar) && char === verticalConnection),
         W: westChar === horizontalConnection || (isPawnBox(westChar) && char === horizontalConnection),
         E: eastChar === horizontalConnection || (isPawnBox(eastChar) && char === horizontalConnection),
-        pawn: Number(char) > 4 ? PLAYER2 : (Number(char) >= 0 && char !== ' ') ? PLAYER1 : '',
+        pawn: isPlayer2Pawn(char) ? PLAYERS.P_2 : isPlayer1Pawn(char) ? PLAYERS.P_1 : '',
         row: horIndex,
         column: vertIndex,
-        isHighlighted: false,
-        isInMill: (Number(char) >= 0 && char !== ' ') ? Number(char) % 5 : 0,
+        isHighlighted: isHighLighted(char),
+        includedMills: howManyMills(char),
         id: `${horIndex}-${vertIndex}`
       };
     }
